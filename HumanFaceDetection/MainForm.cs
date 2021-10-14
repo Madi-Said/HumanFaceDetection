@@ -102,12 +102,12 @@ namespace HumanFaceDetection
             foreach (FilterInfo device in filter)
                 cboDevice.Items.Add(device.Name);
             cboDevice.SelectedIndex = 0;
+            device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
+            device.NewFrame += Device_NewFrame;
         }
 
         private void DetectBtn_Click(object sender, EventArgs e)
         {
-            device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
-            device.NewFrame += Device_NewFrame;
             AdjustComponents();
             device.Start();
         }
