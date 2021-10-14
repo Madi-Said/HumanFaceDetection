@@ -100,17 +100,23 @@ namespace HumanFaceDetection
         private void MainForm_Load(object sender, EventArgs e)
         {
             filter = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo device in filter)
-                cboDevice.Items.Add(device.Name);
-            device = new VideoCaptureDevice(filter[0].MonikerString);
-            device.NewFrame += Device_NewFrame;
-            cboDevice.SelectedIndex = 0;
+            if(filter.Count > 0)
+            {
+                foreach (FilterInfo device in filter)
+                    cboDevice.Items.Add(device.Name);
+                cboDevice.SelectedIndex = 0;
+                device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
+                device.NewFrame += Device_NewFrame;
+            }
         }
 
         private void DetectBtn_Click(object sender, EventArgs e)
         {
-            AdjustComponents();
-            device.Start();
+            if (device != null && !device.IsRunning)
+            {
+                AdjustComponents();
+                device.Start();
+            }
         }
 
         private void Device_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -150,7 +156,7 @@ namespace HumanFaceDetection
 
         private void CboDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (device.IsRunning)
+            if (device != null && device.IsRunning)
             {
                 device.Stop();
                 device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
