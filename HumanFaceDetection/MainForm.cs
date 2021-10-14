@@ -72,7 +72,6 @@ namespace HumanFaceDetection
             this.captureBox.Size = new System.Drawing.Size(918, 349);
             this.captureBox.TabIndex = 3;
             this.captureBox.TabStop = false;
-            this.captureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             // 
             // MainForm
             // 
@@ -109,6 +108,7 @@ namespace HumanFaceDetection
         {
             device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
             device.NewFrame += Device_NewFrame;
+            device.DesiredFrameSize = new Size(captureBox.Width, captureBox.Height);
             device.Start();
         }
 
