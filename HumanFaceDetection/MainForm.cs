@@ -54,6 +54,7 @@ namespace HumanFaceDetection
             this.cboDevice.Name = "cboDevice";
             this.cboDevice.Size = new System.Drawing.Size(276, 21);
             this.cboDevice.TabIndex = 1;
+            this.cboDevice.SelectedIndexChanged += new System.EventHandler(this.CboDevice_SelectedIndexChanged);
             // 
             // cameraLbl
             // 
@@ -101,9 +102,9 @@ namespace HumanFaceDetection
             filter = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in filter)
                 cboDevice.Items.Add(device.Name);
-            cboDevice.SelectedIndex = 0;
-            device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
+            device = new VideoCaptureDevice(filter[0].MonikerString);
             device.NewFrame += Device_NewFrame;
+            cboDevice.SelectedIndex = 0;
         }
 
         private void DetectBtn_Click(object sender, EventArgs e)
@@ -145,6 +146,18 @@ namespace HumanFaceDetection
             captureBox.Height = resolutionHeight;
             detectBtn.Location = new Point(captureBox.Location.X + captureBox.Width - detectBtn.Width, detectBtn.Location.Y);
             ClientSize = new Size(detectBtn.Location.X + detectBtn.Width + 1, captureBox.Location.Y + captureBox.Height);
+        }
+
+        private void CboDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (device.IsRunning)
+            {
+                device.Stop();
+                device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
+                device.NewFrame += Device_NewFrame;
+                AdjustComponents();
+                device.Start();
+            }
         }
     }
 }
