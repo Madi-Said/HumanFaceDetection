@@ -72,6 +72,7 @@ namespace HumanFaceDetection
             this.captureBox.Size = new System.Drawing.Size(918, 349);
             this.captureBox.TabIndex = 3;
             this.captureBox.TabStop = false;
+            this.captureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             // 
             // MainForm
             // 
