@@ -14,6 +14,7 @@ namespace HumanFaceDetection
         private System.Windows.Forms.ComboBox cboDevice;
         private System.Windows.Forms.Label cameraLbl;
         private System.Windows.Forms.PictureBox captureBox;
+        private System.Windows.Forms.Timer watch;
         private FilterInfoCollection filter;
         private VideoCaptureDevice device;
         static readonly CascadeClassifier cascadeClassifier = new CascadeClassifier("training.xml");
@@ -30,10 +31,12 @@ namespace HumanFaceDetection
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.detectBtn = new System.Windows.Forms.Button();
             this.cboDevice = new System.Windows.Forms.ComboBox();
             this.cameraLbl = new System.Windows.Forms.Label();
             this.captureBox = new System.Windows.Forms.PictureBox();
+            this.watch = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.captureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,6 +76,10 @@ namespace HumanFaceDetection
             this.captureBox.TabIndex = 3;
             this.captureBox.TabStop = false;
             // 
+            // watch
+            // 
+            this.watch.Tick += new System.EventHandler(this.watch_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -109,30 +116,38 @@ namespace HumanFaceDetection
             device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
             device.NewFrame += Device_NewFrame;
             device.Start();
+            watch.Start();
         }
 
         private void Device_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
-            Image<Bgr, byte> grayImage = new Image<Bgr, byte>(bitmap);
-            Rectangle[] rectangles = cascadeClassifier.DetectMultiScale(grayImage, 1.2, 1);
-            foreach (Rectangle rectangle in rectangles)
-            {
-                using (Graphics graphics = Graphics.FromImage(bitmap))
-                {
-                    using (Pen pen = new Pen(Color.Red, 1))
-                    {
-                        graphics.DrawRectangle(pen, rectangle);
-                    }
-                }
-            }
-            captureBox.Image = bitmap;
+            captureBox.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (device.IsRunning)
                 device.Stop();
+        }
+
+        private void watch_Tick(object sender, EventArgs e)
+        {
+            Bitmap bitmap = (Bitmap)captureBox.Image;
+            if(bitmap != null)
+            {
+                Image<Bgr, byte> grayImage = new Image<Bgr, byte>(bitmap);
+                Rectangle[] rectangles = cascadeClassifier.DetectMultiScale(grayImage, 1.2, 1);
+                foreach (Rectangle rectangle in rectangles)
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        using (Pen pen = new Pen(Color.Red, 1))
+                        {
+                            graphics.DrawRectangle(pen, rectangle);
+                        }
+                    }
+                }
+            }
         }
     }
 }
