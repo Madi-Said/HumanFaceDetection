@@ -108,7 +108,7 @@ namespace HumanFaceDetection
         {
             device = new VideoCaptureDevice(filter[cboDevice.SelectedIndex].MonikerString);
             device.NewFrame += Device_NewFrame;
-            device.DesiredFrameSize = new Size(captureBox.Width, captureBox.Height);
+            AdjustComponents();
             device.Start();
         }
 
@@ -134,6 +134,17 @@ namespace HumanFaceDetection
         {
             if (device.IsRunning)
                 device.Stop();
+        }
+
+        private void AdjustComponents()
+        {
+            int resolutionWidth = device.VideoCapabilities[0].FrameSize.Width,
+                resolutionHeight = device.VideoCapabilities[0].FrameSize.Height;
+
+            captureBox.Width = resolutionWidth;
+            captureBox.Height = resolutionHeight;
+            detectBtn.Location = new Point(captureBox.Location.X + captureBox.Width - detectBtn.Width, detectBtn.Location.Y);
+            ClientSize = new Size(detectBtn.Location.X + detectBtn.Width + 1, captureBox.Location.Y + captureBox.Height);
         }
     }
 }
