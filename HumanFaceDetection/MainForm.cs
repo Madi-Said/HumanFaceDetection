@@ -39,7 +39,7 @@ namespace HumanFaceDetection
             // 
             // detectBtn
             // 
-            this.detectBtn.Location = new System.Drawing.Point(445, 66);
+            this.detectBtn.Location = new System.Drawing.Point(799, 16);
             this.detectBtn.Name = "detectBtn";
             this.detectBtn.Size = new System.Drawing.Size(121, 33);
             this.detectBtn.TabIndex = 0;
@@ -50,15 +50,15 @@ namespace HumanFaceDetection
             // cboDevice
             // 
             this.cboDevice.FormattingEnabled = true;
-            this.cboDevice.Location = new System.Drawing.Point(118, 23);
+            this.cboDevice.Location = new System.Drawing.Point(54, 23);
             this.cboDevice.Name = "cboDevice";
-            this.cboDevice.Size = new System.Drawing.Size(217, 21);
+            this.cboDevice.Size = new System.Drawing.Size(276, 21);
             this.cboDevice.TabIndex = 1;
             // 
             // cameraLbl
             // 
             this.cameraLbl.AutoSize = true;
-            this.cameraLbl.Location = new System.Drawing.Point(67, 26);
+            this.cameraLbl.Location = new System.Drawing.Point(3, 26);
             this.cameraLbl.Name = "cameraLbl";
             this.cameraLbl.Size = new System.Drawing.Size(49, 13);
             this.cameraLbl.TabIndex = 2;
@@ -69,7 +69,7 @@ namespace HumanFaceDetection
             this.captureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.captureBox.Location = new System.Drawing.Point(3, 67);
             this.captureBox.Name = "captureBox";
-            this.captureBox.Size = new System.Drawing.Size(440, 386);
+            this.captureBox.Size = new System.Drawing.Size(918, 349);
             this.captureBox.TabIndex = 3;
             this.captureBox.TabStop = false;
             // 
@@ -77,7 +77,7 @@ namespace HumanFaceDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(568, 455);
+            this.ClientSize = new System.Drawing.Size(924, 418);
             this.Controls.Add(this.captureBox);
             this.Controls.Add(this.cameraLbl);
             this.Controls.Add(this.cboDevice);
